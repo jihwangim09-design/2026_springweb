@@ -18,14 +18,17 @@ public class ReviewService {
     @Autowired private ReviewRepository reviewRepository;
     @Autowired private ProductsRepository productsRepository;
 
-    public List<ReviewDto> getreviews(Integer bno) {
-        List<ReviewEntity> reviewEntities = reviewRepository.findByProductEntity_Pno(bno);
-        List<ReviewDto> reviewDtos = new ArrayList<>();
-
-        reviewEntities.forEach((entity) -> { reviewDtos.add(ReviewDto.from(entity));});
-
-        return reviewDtos;
-    }
+    public List<ReviewDto> getreviews(Integer bno){
+    List<ReviewEntity> reviewEntities = reviewRepository.findAll();
+    List<ReviewDto> reviewDtos = new ArrayList<>();
+        reviewEntities.forEach((reviewEntity) -> {
+            if (reviewEntity.getProductEntity().getBno().equals(bno)) {
+                ReviewDto reviewDto = ReviewDto.from(reviewEntity);
+                reviewDtos.add(reviewDto);
+            }
+    });
+    return reviewDtos;
+}
 
     public boolean createreview(ReviewDto reviewDto) {
         ProductsEntity productEntity = productsRepository.findById(reviewDto.getBno()).orElse(null);

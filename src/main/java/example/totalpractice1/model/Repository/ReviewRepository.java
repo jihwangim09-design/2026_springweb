@@ -10,5 +10,4 @@ import example.totalpractice1.model.Entity.ReviewEntity;
 @Repository 
 public interface ReviewRepository extends JpaRepository <ReviewEntity , Integer > {
 
-    List<ReviewEntity> findByProductEntity_Pno(Integer bno);
 }
