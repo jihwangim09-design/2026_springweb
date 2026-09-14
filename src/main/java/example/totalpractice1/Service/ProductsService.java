@@ -16,7 +16,7 @@ import example.totalpractice1.model.Repository.ProductsRepository;
 public class ProductsService {
     @Autowired private ProductsRepository productsRepository;
 
-        // 1. 제품 조회
+    // 1. 제품 조회
     public List<ProductResponseDto> productFindAll() {
         List<ProductsEntity> productsEntities = productsRepository.findAll();
         List<ProductResponseDto> productResponseDtos = new ArrayList<>();

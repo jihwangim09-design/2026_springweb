@@ -1,6 +1,6 @@
 package example.totalpractice1.model.Entity;
 
-import example.day06.CategoryEntity;
+import example.totalpractice1.model.Entity.CategoryEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

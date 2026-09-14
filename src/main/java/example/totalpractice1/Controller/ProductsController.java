@@ -28,24 +28,24 @@ public class ProductsController {
         this.productsService = productsService;
     }
 
-    @GetMapping ("")
+    @GetMapping("")
     public List<ProductResponseDto> productFindAll() {
         return productsService.productFindAll();
     }
 
-    @PostMapping ("")
-    public boolean productSave(@RequestBody ProductDto productDto) {
-        return productsService.productSave(productDto); 
+    @PostMapping("")
+    public ProductDto productSave(@RequestBody ProductDto productDto) {
+        return productsService.productSave(productDto);
     }
 
-    @PutMapping ("")
+    @PutMapping("")
     public boolean productUpdate(@RequestBody ProductDto productDto) {
         return productsService.productUpdate(productDto);
     }
 
-    @DeleteMapping ("")
+    @DeleteMapping("")
     public boolean productDelete(
-            @RequestParam (name = "bno") Integer bno) {
+            @RequestParam(name = "bno") Integer bno) {
         return productsService.productDelete(bno);
     }
 }
