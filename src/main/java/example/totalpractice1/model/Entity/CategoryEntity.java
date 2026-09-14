@@ -17,10 +17,7 @@ import lombok.ToString;
 
 @Entity 
 @Table (name="category")
-@NoArgsConstructor 
-@AllArgsConstructor 
-@Builder 
-@Data 
+@NoArgsConstructor @AllArgsConstructor @Builder @Data 
 public class CategoryEntity {
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)

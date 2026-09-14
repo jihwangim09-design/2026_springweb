@@ -3,6 +3,7 @@ package example.totalpractice1.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import example.totalpractice1.Service.CategoryService;
 import example.totalpractice1.dto.CategoryDto;
 
 @RestController 
-@RequestMapping ("/api/categories")
+@RequestMapping("/api/categories")
+@CrossOrigin(value = "http://localhost:5173")
 public class CategoryController {
     @Autowired private CategoryService categoryService;
 
@@ -32,9 +35,4 @@ public class CategoryController {
     public boolean delete(@RequestParam(name="cno") Integer cno){
         return categoryService.delete(cno);
     }
-
-
-
-
-
 }
