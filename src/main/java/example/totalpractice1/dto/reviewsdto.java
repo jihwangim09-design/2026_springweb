@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder 
-public class reviewsDto {
+public class ReviewsDto {
     private Integer rno;
     private Integer bno;
     private String reviewer;
