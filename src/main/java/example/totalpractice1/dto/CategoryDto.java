@@ -3,7 +3,7 @@ package example.totalpractice1.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import example.day06.CategoryEntity;
+import example.totalpractice1.model.Entity.CategoryEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import example.totalpractice1.Service.ProductsService;
 import example.totalpractice1.dto.ProductDto;
+import example.totalpractice1.dto.ProductResponseDto;
 
 @CrossOrigin (value = "http://localhost:5173")
 @RestController 
@@ -29,12 +30,12 @@ public class ProductsController {
 
     @GetMapping ("")
     public List<ProductResponseDto> productFindAll() {
-        return productsService.productFindAll(productDto);
+        return productsService.productFindAll();
     }
 
     @PostMapping ("")
     public boolean productSave(@RequestBody ProductDto productDto) {
-        return productsService.productSave();
+        return productsService.productSave(productDto); 
     }
 
     @PutMapping ("")

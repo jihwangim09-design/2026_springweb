@@ -1,7 +1,7 @@
 package example.totalpractice1.model.Entity;
 
 import java.util.List;
-
+import java.util.ArrayList;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +22,7 @@ public class CategoryEntity {
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer cno;
-    private String name;
+    private String Name;
 
     @OneToMany (mappedBy = "categoryEntity", cascade = CascadeType.ALL)
     @ToString.Exclude

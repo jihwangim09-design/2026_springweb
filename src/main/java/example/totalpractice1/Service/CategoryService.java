@@ -6,7 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import example.day06.CategoryEntity;
+
+import example.totalpractice1.model.Entity.CategoryEntity;
 import example.totalpractice1.dto.CategoryDto;
 import example.totalpractice1.model.Repository.CategoryRepository;
 
