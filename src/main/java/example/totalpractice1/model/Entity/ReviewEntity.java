@@ -12,9 +12,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity @Table ( name = "reviews")
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class ReviewsEntity {
+
+@Entity @Table ( name = "review")
+@Data @NoArgsConstructor @AllArgsConstructor @Builder 
+public class ReviewEntity {
     @Id 
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
     private Integer rno;
@@ -23,6 +24,6 @@ public class ReviewsEntity {
     private int rating;
 
     @ManyToOne 
-    @JoinColumn ( name = "bno");
-    private ProductEntity productEntity;
+    @JoinColumn ( name = "bno")
+    private ProductsEntity productEntity;
 }
