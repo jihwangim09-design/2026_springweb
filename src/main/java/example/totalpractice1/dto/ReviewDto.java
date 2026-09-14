@@ -15,15 +15,6 @@ public class ReviewDto {
     private String content;
     private int rating;
 
-    public static ReviewDto from(ReviewEntity entity) {
-        return ReviewDto.builder()
-                .rno(entity.getRno())
-                .bno(entity.getProductEntity().getPno())
-                .reviewer(entity.getReviewer())
-                .content(entity.getContent())
-                .rating(entity.getRating())
-                .build();
-    }
 
     public ReviewEntity toEntity(ProductsEntity productEntity) {
         return ReviewEntity.builder()
@@ -31,6 +22,16 @@ public class ReviewDto {
                 .content(this.content)
                 .rating(this.rating)
                 .productEntity(productEntity)
+                .build();
+    }
+
+    public static ReviewDto from(ReviewEntity entity) {
+        return ReviewDto.builder()
+                .rno(entity.getRno())
+                .bno(entity.getProductEntity().getPno())
+                .reviewer(entity.getReviewer())
+                .content(entity.getContent())
+                .rating(entity.getRating())
                 .build();
     }
 }

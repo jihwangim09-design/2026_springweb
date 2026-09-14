@@ -7,25 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import example.totalpractice1.dto.ReviewDto;
+import example.totalpractice1.model.Entity.ReviewEntity;
 import example.totalpractice1.model.Entity.ProductsEntity;
-import example.totalpractice1.model.Entity.ReviewEntity;
-import example.totalpractice1.model.Entity.ReviewEntity;
 import example.totalpractice1.model.Repository.ReviewRepository;
+import example.totalpractice1.model.Repository.ProductsRepository;
 
-@Service 
+@Service
 public class ReviewService {
+
     @Autowired private ReviewRepository reviewRepository;
-    @Autowired private ProductRepository productRepository;
-
-
+    @Autowired private ProductsRepository productsRepository;
 
     public List<ReviewDto> getreviews(Integer bno) {
-        List<ReviewEntity> reviewEntities = reviewRepository.findByProductsEntity_Pno(bno);
+        List<ReviewEntity> reviewEntities = reviewRepository.findByProductEntity_Pno(bno);
         List<ReviewDto> reviewDtos = new ArrayList<>();
 
-        reviewEntities.forEach((entity) -> {
-            reviewDtos.add(ReviewDto.from(entity));
-        });
+        reviewEntities.forEach((entity) -> { reviewDtos.add(ReviewDto.from(entity));});
 
         return reviewDtos;
     }
@@ -46,11 +43,3 @@ public class ReviewService {
         return true;
     }
 }
-    
-
-
-
-
-
-
-} 
