@@ -28,7 +28,7 @@ public class ReviewDto {
     public static ReviewDto from(ReviewEntity entity) {
         return ReviewDto.builder()
                 .rno(entity.getRno())
-                .bno(entity.getProductEntity().getPno())
+                .bno(entity.getProductEntity().getBno())
                 .reviewer(entity.getReviewer())
                 .content(entity.getContent())
                 .rating(entity.getRating())
