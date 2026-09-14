@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity @Table ( name = "reviews")
-@Data @NoArgsConstructor @AllArgsConstructor @Builder 
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class reviewsEntity {
     @Id 
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
