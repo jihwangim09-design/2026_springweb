@@ -22,7 +22,7 @@ public class CategoryEntity {
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer cno;
-    private String Name;
+    private String name;
 
     @OneToMany (mappedBy = "categoryEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
