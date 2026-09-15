@@ -22,7 +22,7 @@ public class BoardDto {
     @Builder.Default
     private List<CommentDto> comments = new ArrayList<>();
 
-    public BoardEntity toEntity(){
+    public BoardEntity toEntity(){ // 게시물 등록 사용자가 입력한 것만 (author, password, content)
         return BoardEntity.builder() // .build()가 실행되면 객체가 생성
         // this는 이 메서드를 실행하고 있는 바로 그 객체 자신
         // 여기서는 boardDto.toEntity()를 통해 toEntity()를 실행했으므로 
@@ -35,6 +35,7 @@ public class BoardDto {
     }
 
     public static BoardDto from(BoardEntity entity){ // entity는 Service에서 넘긴 boardEntity(게시물객체 1개)임 아직까진 Boardentity타입
+        // 댓글 조회 DB에 있는 전체 정보 (id, 작성일 등 포함)
         return BoardDto.builder() 
                 .id( entity.getId() )
                 .author( entity.getAuthor() )

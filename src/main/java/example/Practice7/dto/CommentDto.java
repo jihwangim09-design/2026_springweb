@@ -2,13 +2,13 @@ package example.Practice7.dto;
 
 import java.time.LocalDateTime;
 
-import example.Practice6.model.Entity.CommentEntity;
+import example.Practice7.model.Entity.CommentEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data @NoArgsConstructor @AllArgsConstructor @Builder 
 public class CommentDto {
     private Integer id;
     private String author;
@@ -16,24 +16,24 @@ public class CommentDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Integer boardId;
+    private Integer boardid;
 
     public CommentEntity toEntity(){
         return CommentEntity.builder()
-                .author(this.author)
-                .password(this.password)
-                .content(this.content)
-                .build();
+            .author(this.author)
+            .password(this.password)
+            .content(this.content)
+            .build();
     }
-    
+
     public static CommentDto from(CommentEntity entity){
         return CommentDto.builder()
-                .id( entity.getId() )
-                .author( entity.getAuthor() )
-                .password( entity.getPassword() )
-                .content( entity.getContent() )
-                .createdAt( entity.getCreatedAt() )
-                .updatedAt( entity.getUpdatedAt() )
-                .build();
+            .id(entity.getId())
+            .author(entity.getAuthor())
+            .password(entity.getPassword())
+            .content(entity.getContent())
+            .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
+            .build();
     }
 }

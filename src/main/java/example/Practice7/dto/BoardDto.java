@@ -1,6 +1,5 @@
 package example.Practice7.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor @Data @AllArgsConstructor @Builder 
+@Data @NoArgsConstructor @AllArgsConstructor @Builder 
 public class BoardDto {
     private Integer id;
     private String author;
@@ -26,21 +25,21 @@ public class BoardDto {
 
     public BoardEntity toEntity(){
         return BoardEntity.builder()
-            .author(this.author)
-            .password(this.password)
-            .content(this.content)
-            .build();
+        .author(this.author)
+        .password(this.password)
+        .content(this.content)
+        .build();
     }
 
-    public static BoardDto from(BoardEntity entity){
+    public static BoardDto from(BoradEntity entity){
         return BoardDto.builder()
-                .id( entity.getId() )
-                .author( entity.getAuthor() )
-                .password( entity.getPassword() ) 
-                .content( entity.getContent() )
-                .createdAt( entity.getCreatedAt() )
-                .updatedAt( entity.getUpdatedAt() )
-                .build();
+            .id(entity.getId())
+            .author(entity.getAuthor())
+            .password(entity.getPassword())
+            .content(entity.getContent())
+            .createdAt(entity.getCreatedAt())
+            .updatedAt(entity.getUpdatedAt())
+            .build();
 
     }
 }
