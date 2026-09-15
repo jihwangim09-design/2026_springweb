@@ -1,8 +1,10 @@
 package example.Practice7.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,28 +13,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import example.Practice7.dto.BoardDto;
+import example.Practice7.dto.CommentDto;
+import example.Practice7.model.Entity.BoardEntity;
+import example.Practice7.model.Repository.BoardRepository;
 
-@RestController 
+@Service
 public class BoardService {
-    @Autowired BoardService boardService;
+    @Autowired BoardRepository boardRepository;
 
-    @PostMapping ("/api/board")
-    public boolean 게시물등록( @RequestBody BoardDto boardDto){
-        return boardService.게시물등록(boardDto);
-    
+  
+    public boolean 게시물등록( BoardDto boardDto){
+        BoardEntity boardEntity = boardDto.toEntity();
+        BoardEntity savedEntity = boardRepository.save(boardEntity);
+        if ( savedEntity.getId() >= 1 ) return true;
+        return false;
     }
 
-    @GetMapping ("/api/board")
     public List<BoardDto> 게시물전체조회(){
-        return boardService.게시물전체조회();
-    }
-
-    @DeleteMapping ("/api/board")
-    public boolean 게시물삭제( 
-        @RequestParam ( name =  "id") Integer id ,
-        @RequestParam ( name = "password") String password
-    ){
-        return boardService.게시물삭제(id, password);
+        List<BoardEntity> boardEntities = boardRepository.findAll();
+        List<BoardDto> boardDtos = new ArrayList<>();
+        boardEntities.forEach( (boardEntity) -> {
+            BoardDto boardDto = BoardDto.from(boardEntity)
+            boardEntity.getCommentEntities().forEach((commentEntity)->{
+            CommentDto commentDto = CommentDto.from(commentEntity)
+            boardDto.getComments().add(commentDto);
+            });
+            boardDtos.add(boardDto);
+        });
+        return boardDtos;
     }
 
 }

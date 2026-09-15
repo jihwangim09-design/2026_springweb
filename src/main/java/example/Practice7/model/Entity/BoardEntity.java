@@ -16,18 +16,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-@Entity @Table ( name = "board")
+@Entity @Table (name = "board")
 @Data @NoArgsConstructor @AllArgsConstructor @Builder 
-public class BoradEntity extends BaseTime{
+public class BoardEntity extends BaseTime{
     @Id 
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private Integer id;
     private String author;
     private String password;
     private String content;
 
-    @OneToMany ( mappedBy = "boardEntity" , cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "boardEntity" , cascade = CascadeType.ALL)
     @ToString.Exclude
     @Builder.Default
     private List<CommentEntity> commentEntities = new ArrayList<>();

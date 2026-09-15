@@ -4,8 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import example.Practice5.model.entity.BoardEntity;
-import example.Practice7.model.Entity.BoradEntity;
+import example.Practice7.model.Entity.BoardEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,15 +30,14 @@ public class BoardDto {
         .build();
     }
 
-    public static BoardDto from(BoradEntity entity){
+    public static BoardDto from(BoardEntity entity){
         return BoardDto.builder()
-            .id(entity.getId())
-            .author(entity.getAuthor())
-            .password(entity.getPassword())
-            .content(entity.getContent())
-            .createdAt(entity.getCreatedAt())
-            .updatedAt(entity.getUpdatedAt())
-            .build();
-
+        .id(entity.getId())
+        .author(entity.getAuthor())
+        .password(entity.getPassword())
+        .content(entity.getContent())
+        .createdAt(entity.getCreatedAt())
+        .updatedAt(entity.getUpdatedAt())
+        .build();
     }
 }

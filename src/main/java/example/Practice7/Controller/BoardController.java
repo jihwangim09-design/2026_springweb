@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import example.Practice6.Service.BoardService;
-import example.Practice6.Dto.BoardDto;
-
-
+import example.Practice7.Service.BoardService;
+import example.Practice7.dto.BoardDto;
 
 @RestController 
 public class BoardController {
@@ -21,18 +19,18 @@ public class BoardController {
 
     @PostMapping ("/api/board")
     public boolean 게시물등록( @RequestBody BoardDto boardDto){
-        return boardService.게시물등록( boardDto );
+        return boardService.게시물등록(boardDto);
     }
-    
-    @GetMapping("/api/board")
+    @GetMapping ("/api/board")
     public List<BoardDto> 게시물전체조회(){
         return boardService.게시물전체조회();
     }
-
-    @DeleteMapping("/api/board")
+    @DeleteMapping ("/api/board")
     public boolean 게시물삭제(
-    @RequestParam ( name = "id") Integer id,
-    @RequestParam ( name = "password") String password ){
-        return boardService.게시물삭제( id , password );
+        @RequestParam ( name = "id" ) Integer id,
+        @RequestParam ( name = "password" ) String password
+    ){
+        return boardService.게시물삭제(id, password);
     }
+
 }

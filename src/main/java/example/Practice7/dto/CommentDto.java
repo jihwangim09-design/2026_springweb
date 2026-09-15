@@ -20,20 +20,20 @@ public class CommentDto {
 
     public CommentEntity toEntity(){
         return CommentEntity.builder()
-            .author(this.author)
-            .password(this.password)
-            .content(this.content)
-            .build();
+        .author(this.author)
+        .password(this.password)
+        .content(this.content)
+        .build();
     }
 
     public static CommentDto from(CommentEntity entity){
         return CommentDto.builder()
-            .id(entity.getId())
-            .author(entity.getAuthor())
-            .password(entity.getPassword())
-            .content(entity.getContent())
-            .createdAt(entity.getCreatedAt())
-            .updatedAt(entity.getUpdatedAt())
-            .build();
+        .id(entity.getId())
+        .author(entity.getAuthor())
+        .password(entity.getPassword())
+        .content(entity.getContent())
+        .createdAt(entity.getCreatedAt())
+        .updatedAt(entity.getUpdatedAt())
+        .build();
     }
 }

@@ -51,13 +51,20 @@ public class BoardService {
         // 3-2) 거기서 게시글번호 , 작성자 , 비밀번호 , 내용 , 생성시간 , 수정시간을 담아서 BoardDto 객체로 변환해서 리턴
         // 3-3) 돌아와서 BoardDto boardDto여기에 넣음
             BoardDto boardDto = BoardDto.from(boardEntity); 
-            boardEntity.getCommentEntities().forEach((commentEntity)-> {
+            boardEntity.getCommentEntities().forEach((commentEntity)-> { 
+            // boardEntity.getCommentEntities() 는 1개게시물객체 boardEntity에 연결된 List<CommentEntity>를 전부 가져옴
             CommentDto commentDto = CommentDto.from( commentEntity );
+            // commentDto에 dto로 변환된 댓글이 있음
             boardDto.getComments().add(commentDto);
+            // getComments()이건 빈 리스트 @Builder.Default 이거로 빈 리스트를 생성하게 해서 nullpoint에러가 안생김
+            // 빈리스트를 가져와서 .add(commentDto); 로 dto로 변환한 댓글들을 Comments에 추가함
             });
             boardDtos.add(boardDto);
+            // List<BoardDto> boardDtos = new ArrayList<>();위에서 만든 <BoardDto>타입의 리스트 boardDtos에 더함
         });
         return boardDtos;
+        // 게시물이랑 댓글을 Dto로 바꾼 리스트를 반환
+        // 댓글을 그냥 entity로 담고 있으면 서로가 서로를 참조하면서 무한 반복 사용자한테 나가는 데이터는 Dto로 통일해야하는게 관례?
     }
 
     public boolean 게시물삭제( Integer id , String password ) {
