@@ -1,17 +1,8 @@
 package example.Practice6.model.Entity;
 
-<<<<<<< HEAD
-import java.beans.IntrospectionException;
 import java.util.ArrayList;
 import java.util.List;
-
-import example.Practice5.dto.CommentDto;
-=======
-import java.util.ArrayList;
-import java.util.List;
-
 import example.Practice6.BaseTime;
->>>>>>> bf24a7ca8af3c5decbe7594a491faa66af579382
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,25 +16,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-<<<<<<< HEAD
-@Entity @Table ( name = "board")
-@NoArgsConstructor @AllArgsConstructor @Data @Builder 
-public class BoardEntity {
-    @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY )
-    private Integer boardId;
-    private String author;
-    private String password;
-    private String content;
-
-    
-    @OneToMany ( mappedBy = "board_id" , cascade = CascadeType.ALL )
-    @ToString.Exclude
-    @Builder.Default
-    private List<CommentEntity> commentEntities = new ArrayList<>();
-
-}
-=======
 @Entity // JPA가 관리하는 진짜 DB 테이블용 클래스
 @Table ( name = "board") // 이 클래스는 DB의 board라는 이름의 테이블이랑 연결
 @Data @NoArgsConstructor @AllArgsConstructor @Builder // Lombok , Lombok은 반복적으로 써야 하는 코드(getter, setter, 생성자 등)를 자동으로 만들어주는 도구
@@ -64,4 +36,3 @@ public class BoardEntity extends BaseTime {
     private List<CommentEntity> commentEntities = new ArrayList<>();
     // List<CommentEntity> (댓글 여러 개 담는 리스트) 
 }
->>>>>>> bf24a7ca8af3c5decbe7594a491faa66af579382

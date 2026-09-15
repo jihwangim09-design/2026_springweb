@@ -3,7 +3,7 @@ package example.Practice6.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import example.Practice6.dto.CommentDto;
+import example.Practice6.Dto.CommentDto;
 import example.Practice6.model.Entity.BoardEntity;
 import example.Practice6.model.Entity.CommentEntity;
 import example.Practice6.model.Repository.BoardRepository;

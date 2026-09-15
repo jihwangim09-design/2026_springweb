@@ -1,9 +1,5 @@
 package example.Practice6.model.Repository;
 
-<<<<<<< HEAD
-public class BoardRepository {
-    
-=======
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +10,4 @@ import example.Practice6.model.Entity.BoardEntity;
 public interface BoardRepository extends JpaRepository< BoardEntity, Integer > {
 
 
->>>>>>> bf24a7ca8af3c5decbe7594a491faa66af579382
 }

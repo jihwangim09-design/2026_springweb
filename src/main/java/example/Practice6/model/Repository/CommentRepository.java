@@ -1,17 +1,12 @@
 package example.Practice6.model.Repository;
 
-<<<<<<< HEAD
-public class CommentRepository {
-=======
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import example.Practice6.model.Entity.CommentEntity;
 
 
-
 public interface CommentRepository extends JpaRepository< CommentEntity , Integer >{
 
 
->>>>>>> bf24a7ca8af3c5decbe7594a491faa66af579382
-    
+
 }

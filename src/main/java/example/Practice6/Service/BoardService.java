@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import example.Practice6.dto.BoardDto;
-import example.Practice6.dto.CommentDto;
+import example.Practice6.Dto.BoardDto;
+import example.Practice6.Dto.CommentDto;
 import example.Practice6.model.Entity.BoardEntity;
 import example.Practice6.model.Repository.BoardRepository;
 

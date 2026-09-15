@@ -1,20 +1,10 @@
 package example.Practice6.model.Entity;
 
-<<<<<<< HEAD
-
-import org.springframework.data.jpa.repository.Meta;
-
-=======
 import example.Practice6.BaseTime;
->>>>>>> bf24a7ca8af3c5decbe7594a491faa66af579382
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-<<<<<<< HEAD
-import jakarta.persistence.IdClass;
-=======
->>>>>>> bf24a7ca8af3c5decbe7594a491faa66af579382
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -23,23 +13,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-<<<<<<< HEAD
-@Entity @Table ( name = "comment")
-@Data @NoArgsConstructor @AllArgsConstructor @Builder 
-public class CommentEntity {
-    @Id 
-    @GeneratedValue (strategy = GenerationType.IDENTITY )
-    private Integer commentId;
-    private String author;
-    private String password;
-    private String content;
-
-
-    @ManyToOne 
-    @JoinColumn ( name = "board_id")
-    private BoardEntity boardEntity;
-
-=======
 @Entity // JPA가 관리하는 진짜 DB 테이블용 클래스
 @Table ( name = "comment") // 이 클래스는 DB의 comment라는 이름의 테이블이랑 연결
 @Data @NoArgsConstructor @AllArgsConstructor @Builder // Lombok , Lombok은 반복적으로 써야 하는 코드(getter, setter, 생성자 등)를 자동으로 만들어주는 도구
@@ -60,6 +33,5 @@ public class CommentEntity extends BaseTime{
     // 어느 게시글 번호(숫자)에 속하는지"가 아니라, "어느 게시글 객체(전체)에 속하는지" 를 가지고 있음
     // Integer boardId 대신 BoardEntity boardEntity로 하는 이유는 
     // JPA의 연관관계는 "숫자 하나로 연결"하는 게 아니라, "객체와 객체를 직접 연결"하는 방식
->>>>>>> bf24a7ca8af3c5decbe7594a491faa66af579382
 
 }

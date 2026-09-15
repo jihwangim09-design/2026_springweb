@@ -1,5 +1,4 @@
-package example.Practice6.dto;
-
+package example.Practice6.Dto;
 import java.time.LocalDateTime;
 
 import example.Practice6.model.Entity.CommentEntity;

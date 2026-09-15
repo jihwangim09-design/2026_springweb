@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import example.Practice6.Service.BoardService;
-import example.Practice6.dto.BoardDto;
+import example.Practice6.Dto.BoardDto;
 
 
 
