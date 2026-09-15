@@ -1,30 +1,31 @@
 package example.Practice7.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import example.Practice7.BaseTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import example.Practice6.Service.CommentService;
-import example.Practice6.dto.CommentDto;
+@Entity // JPA가 관리하는 진짜 DB 테이블용 클래스
+@Table ( name = "comment") // 이 클래스는 DB의 comment라는 이름의 테이블이랑 연결
+@Data @NoArgsConstructor @AllArgsConstructor @Builder // Lombok , Lombok은 반복적으로 써야 하는 코드(getter, setter, 생성자 등)를 자동으로 만들어주는 도구
+public class CommentController extends BaseTime{
+    @Id // PK(기본키)
+    @GeneratedValue ( strategy = GenerationType.IDENTITY ) // MYSQL의 AUTO_INCREMENT와 같은 개념
+    private Integer id; // 필드선언
+    private String author; // 필드선언
+    private String password; // 필드선언
+    private String content; // 필드선언
 
-
-@RestController 
-public class CommentController {
-    @Autowired CommentService commentService;
-
-    @PostMapping ("/api/board/comments")
-    public boolean 댓글등록( @RequestBody CommentDto commentDTo){
-        return commentService.댓글등록( commentDTo );
-
-    }
-    @DeleteMapping ("/api/board/comments")
-    public boolean 댓글삭제(
-        @RequestParam ( name = "commentId") Integer commentId,
-        @RequestParam ( name = "password") String password) {
-        return commentService.댓글삭제( commentId , password );
-    }
+    @ManyToOne
+    @JoinColumn ( name = "board_id")
     
+
 }
