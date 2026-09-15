@@ -27,14 +27,15 @@ public class BoardController {
     }
     
     @GetMapping("/api/board")
-    public List<BoardDto> 게시물전체조회(){
+    public List<BoardDto> 게시물전체조회(){ // 그냥 다보여줘라서 넘길 파라미터가 없음
         return boardService.게시물전체조회();
     }
 
-    @DeleteMapping("/api/board")
-    public boolean 게시물삭제(
-    @RequestParam ( name = "id") Integer id,
-    @RequestParam ( name = "password") String password ){
+    @DeleteMapping("/api/board") // 사용자가 DELETE http://localhost:8080/api/board?id=3&password=1234 를 요청하면 
+    public boolean 게시물삭제( // @RequestParam 이 URL에서 값을 꺼내서 Controller가 id=3, password="1234"을 갖게됨
+    @RequestParam ( name = "id") Integer id, // name = "id": "URL의 ? 뒤에서, id라는 이름의 값을 찾아서 꺼내줘
+    @RequestParam ( name = "password") String password ) // name = "password": "URL의 ? 뒤에서, password라는 이름의 값을 찾아서 꺼내줘
+    {
         return boardService.게시물삭제( id , password );
     }
 }
