@@ -34,8 +34,8 @@ public class BoardDto {
                 .build();
     }
 
-    public static BoardDto from(BoardEntity entity){
-        return BoardDto.builder()
+    public static BoardDto from(BoardEntity entity){ // entity는 Service에서 넘긴 boardEntity(게시물객체 1개)임 아직까진 Boardentity타입
+        return BoardDto.builder() 
                 .id( entity.getId() )
                 .author( entity.getAuthor() )
                 .password( entity.getPassword() ) 
@@ -43,6 +43,6 @@ public class BoardDto {
                 .createdAt( entity.getCreatedAt() )
                 .updatedAt( entity.getUpdatedAt() )
                 .build();
-
+        // entity 즉 boardEntity(게시물객체 1개)안에 있는 내용들을 새롭게 BoardDto 타입의 이름없는 객체로 생성
     }
 }
