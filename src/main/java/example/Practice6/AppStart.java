@@ -4,10 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication 
+@SpringBootApplication
 @EnableJpaAuditing 
 public class AppStart {
     public static void main(String[] args) {
-            SpringApplication.run(AppStart.class);
+        SpringApplication.run(AppStart.class);
+        // https://planners-dvds-moscow-slightly.trycloudflare.com/practice6/index.html
     }
 }

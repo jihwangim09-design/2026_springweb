@@ -1,4 +1,4 @@
-package example.Practice6.Controller;
+package example.Practice7.Controller;
 
 import java.util.List;
 
