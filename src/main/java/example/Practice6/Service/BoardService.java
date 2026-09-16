@@ -3,6 +3,7 @@ package example.Practice6.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,16 +68,17 @@ public class BoardService {
         // 댓글을 그냥 entity로 담고 있으면 서로가 서로를 참조하면서 무한 반복 사용자한테 나가는 데이터는 Dto로 통일해야하는게 관례?
     }
 
-    public boolean 게시물삭제( Integer id , String password ) {
-        BoardEntity boardEntity = boardRepository.findById(id).orElse( null );
-        if(boardEntity != null){
-            if (boardEntity.getPassword().equals( password) ){
-                boardRepository.deleteById(id);
+    public boolean 게시물삭제( Integer boardId , String password ) {
+        Optional<BoardEntity> optional = boardRepository.findById(boardId);
+        if (optional.isPresent()){
+            BoardEntity boardEntity = optional.get();
+            if (boardEntity.getPassword().equals(password)){  // 비밀번호 일치 확인
+                boardRepository.deleteById(boardId);
                 return true;
             }
         }
         return false;
-    }
+    } 
     
 
 

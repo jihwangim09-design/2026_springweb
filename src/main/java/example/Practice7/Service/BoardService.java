@@ -22,25 +22,9 @@ public class BoardService {
     @Autowired BoardRepository boardRepository;
 
   
-    public boolean 게시물등록( BoardDto boardDto){
+    public boolean 게시물등록 (BoardDto boardDto){
         BoardEntity boardEntity = boardDto.toEntity();
-        BoardEntity savedEntity = boardRepository.save(boardEntity);
-        if ( savedEntity.getId() >= 1 ) return true;
-        return false;
-    }
-
-    public List<BoardDto> 게시물전체조회(){
-        List<BoardEntity> boardEntities = boardRepository.findAll();
-        List<BoardDto> boardDtos = new ArrayList<>();
-        boardEntities.forEach( (boardEntity) -> {
-            BoardDto boardDto = BoardDto.from(boardEntity)
-            boardEntity.getCommentEntities().forEach((commentEntity)->{
-            CommentDto commentDto = CommentDto.from(commentEntity)
-            boardDto.getComments().add(commentDto);
-            });
-            boardDtos.add(boardDto);
-        });
-        return boardDtos;
+        Board
     }
 
 }
