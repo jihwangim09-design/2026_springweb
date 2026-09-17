@@ -70,7 +70,7 @@ public class BoardService {
     }
 
     public boolean 게시물삭제( Integer boardId , String password ) {
-        Optional<BoardEntity> optional = boardRepository.findById(boardId); 
+        Optional<BoardEntity> optional = boardRepository.findById(boardId); // Optional은 포장타입 BoardEntity도 타입
         // boardId(예: 3)를 갖고, boardRepository(DB 접근 도구)한테 3번 게시글을 찾아와라
         // Optional로 받는 이유 : 있을 수도 있고 없을 수도 있는 상태를 받는 그릇이기 때문
         // findById()로 DB를 조회할 때는 그 번호(3번)의 게시글이 진짜로 존재해서 찾아짐
@@ -82,6 +82,7 @@ public class BoardService {
         if (optional.isPresent()){
         // optional.isPresent()은 optional안에 게시글이 들어있는지 확인 결과는 true or false로 반환
             BoardEntity boardEntity = optional.get(); // true면 optional 안에 들어있던 진짜 BoardEntity 객체를 꺼내서 boardEntity에 넣음 
+            // BoardEntity 객체기 때문에 타입도 BoardEntity로 해놓음
             if (boardEntity.getPassword().equals(password)){  // 비밀번호 일치 확인
                 boardRepository.deleteById(boardId); // 내부적으로 DELETE FROM board WHERE id = ... 같은 SQL이 자동으로 실행
                 return true; // 삭제후 true 반환

@@ -2,6 +2,7 @@ package example.Practice7.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,19 @@ public class BoardService {
             boardDtos.add(boardDto);
         });
         return boardDtos;
+    }
+
+    public boolean 게시물삭제( Integer boardid , String password){
+        Optional<BoardEntity> optional = boardRepository.findById(boardid)
+
+        if(optional.isPresent()){
+            BoardEntity boardEntity = optional.get();
+            if(boardEntity.getPassword().equals(password)){
+                boardRepository.deleteById(boardid);
+                return true;
+            }
+            return false;
+        }
     }
 
 }
