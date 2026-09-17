@@ -44,17 +44,9 @@ public class BoardService {
     }
 
     // 3. 게시물 삭제
-    public boolean 게시물삭제( Integer boardId , String password ) {
-        Optional<BoardEntity> optional = boardRepository.findById(boardId);
+    public boolean 게시물삭제( Integer boardid , String password){
+        Optional<BoardEntity> optional = boardRepository.findById(boardid);
 
-        
-        if (optional.isPresent()){
-            BoardEntity boardEntity = optional.get();
-            if (boardEntity.getPassword().equals(password)){  // 비밀번호 일치 확인
-                boardRepository.deleteById(boardId);
-                return true;
-            }
-        }
-        return false;
-    } 
+
+    }
 }

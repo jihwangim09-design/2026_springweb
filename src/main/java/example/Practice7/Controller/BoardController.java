@@ -19,18 +19,18 @@ public class BoardController {
 
     @PostMapping ("/api/board")
     public boolean 게시물등록( @RequestBody BoardDto boardDto){
-        return boardService.게시물등록(boardDto);
+        return boardService.게시물등록( boardDto );
     }
     @GetMapping ("/api/board")
     public List<BoardDto> 게시물전체조회(){
         return boardService.게시물전체조회();
     }
+
     @DeleteMapping ("/api/board")
     public boolean 게시물삭제(
         @RequestParam ( name = "id" ) Integer id,
-        @RequestParam ( name = "password" ) String password
+        @RequestParam ( name = "pasasword" ) String pasasword
     ){
-        return boardService.게시물삭제(id, password);
+        return boardService.게시물삭제(id, pasasword);
     }
-
 }

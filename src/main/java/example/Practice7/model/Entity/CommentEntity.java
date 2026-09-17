@@ -12,18 +12,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+
 @Entity @Table ( name = "comment")
-@NoArgsConstructor @AllArgsConstructor @Builder @Data 
+@Data @NoArgsConstructor @AllArgsConstructor @Builder 
 public class CommentEntity extends BaseTime{
-    @Id 
+    @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
+
     private Integer id;
     private String author;
     private String password;
     private String content;
 
-
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn ( name = "board_id")
     private BoardEntity boardEntity;
+
 }
