@@ -10,45 +10,44 @@ import org.springframework.stereotype.Service;
 import example.Practice7.dto.BoardDto;
 import example.Practice7.dto.CommentDto;
 import example.Practice7.model.Entity.BoardEntity;
-import example.Practice7.model.Entity.CommentEntity;
 import example.Practice7.model.Repository.BoardRepository;
 
 @Service 
 public class BoardService {
     @Autowired BoardRepository boardRepository;
-
+    
     public boolean 게시물등록( BoardDto boardDto ){
         BoardEntity boardEntity = boardDto.toEntity();
         BoardEntity savedEntity = boardRepository.save(boardEntity);
-        if ( savedEntity.getId() >= 1 ) return true;
+        if (savedEntity.getId() >= 1 ) return true;
         return false;
     }
 
     public List<BoardDto> 게시물전체조회(){
         List<BoardEntity> boardEntities = boardRepository.findAll();
         List<BoardDto> boardDtos = new ArrayList<>();
-        boardEntities.forEach( (boardentity) -> {
-            BoardDto boardDto = BoardDto.from(boardentity);
-            boardentity.getCommentEntities().forEach( (commententity) -> {
-            CommentDto commentDto = CommentDto.from(commententity);
-            boardDto.getComments().add(commentDto);
+        boardEntities.forEach((boardEntity) -> {
+            BoardDto boardDto = BoardDto.from(boardEntity);
+            boardEntity.getCommentEntities().forEach((commentEntity) -> {
+                CommentDto commentDto = CommentDto.from(commentEntity);
+                boardDto.getComments().add(commentDto);
+
             });
             boardDtos.add(boardDto);
         });
         return boardDtos;
     }
 
-    public boolean 게시물삭제( Integer boardid , String password){
-        Optional<BoardEntity> optional = boardRepository.findById(boardid)
-
-        if(optional.isPresent()){
+    public boolean 게시물삭제( Integer boardid , String password ){
+        Optional<BoardEntity> optional = boardRepository.findById(boardid);
+        if( optional.isPresent()){
             BoardEntity boardEntity = optional.get();
             if(boardEntity.getPassword().equals(password)){
                 boardRepository.deleteById(boardid);
                 return true;
             }
-            return false;
         }
+        return false;
     }
 
 }
