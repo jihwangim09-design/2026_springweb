@@ -75,6 +75,7 @@ public class ApiService {
 
         
     }
+
     // 엑셀 파일 같은 CSV를 읽어서, 한 줄(행)마다 하나의 Map으로, 그 Map들을 모아서 List로 만드는 과정
     // 3. 프로젝트내 resources>>static> 파일명.csv 
     // 프로젝트 안에 있는 CSV 파일을 읽어서 자바 데이터로 바꾸기 test1,2는 외부api 호출인데 3은 프로젝트 안에 있는 CSV파일을 읽기
@@ -119,6 +120,25 @@ public class ApiService {
         }catch( Exception e){System.out.println(e);}
         return list;
         
+        
+    }
+
+
+    // 4 서울특별시 성동구_헬스장정보
+    public Map<String,Object> test4(){
+        // 1. API 주소( 공공데이터 신청한 api 요청 url )
+        String url ="https://api.odcloud.kr/api/15073993/v1/uddi:121cbcae-2af5-4827-9b4a-f9b6ad401f62";
+        url += "?page="+1;
+        url += "&perpage="+10;   
+        url += "&serviceKey="+serviceKey;
+        // 3. webClient 객체 이용한 api 요청 하고 응답받기
+        Map<String,Object> response = webClient.get() // .http메소드명 http GET메소드
+                .uri(url) // uri는 http 주소상에 자원(쿼리스트링)까지 포함
+                .retrieve() // 요청 결과 반환 결과 수신
+                .bodyToMono( Map.class ) // 응답 결과 content.type 직렬화/변환
+                .block(); // 동기화
+                return response;
+        // 응답이 JSON이라서 bodyToMono(Map.class)로 바로 변환 가능
     }
 }
 
