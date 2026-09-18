@@ -15,7 +15,7 @@ public class ApiService {
     @Value ("${api.pubilc-data.service-key}")
     private String serviceKey;
     private WebClient webClient = WebClient.builder().build();
-    // [1] 인천광역시 부평구 맛집 현황
+    // [1] 인천광역시 부평구 맛집 현황 JSON을 Map으로 
 
     // 1.
     public Map<String,Object> test1(){
@@ -32,11 +32,48 @@ public class ApiService {
                 .block(); // 동기화
                 return response;
     }
-    // [2] 국립중앙의료원_전국 약국 정보 조회 서비스
+    // [2] 국립중앙의료원_전국 약국 정보 조회 서비스 XML을 Map으로
+    public Map<String,Object> test2(){
+        // 1. API 주소( 공공데이터 신청한 api 요청 url )
+        String url ="https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyFullDown";
+        url += "?serviceKey="+serviceKey;
+        url += "&pageNo="+1;
+        url += "&numOfRows"+10;
+        // 3. 
+        Map<String,Object> response = webClient.get().uri(url).retrieve()
+                .bodyToMono(Map.class) // XML 타입 --> Map 직렬화/변환
+                .block();
+        return response;
 
-    
+    }
+
+
+
+
+
+
+
+
+
+
+
    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // WebClient : 외부 API(여기선 공공데이터포털)에 HTTP 요청을 보내고 응답을 받아옴
 // .retrieve : 요청 보내고 응답을 받아와라
