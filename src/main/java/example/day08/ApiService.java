@@ -1,8 +1,12 @@
 package example.day08;
 
+import example.totalpractice1.Controller.ProductsController;
+
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -10,6 +14,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 @Service 
 public class ApiService {
+    private final Controller.ProductsController productsController;
     // 서비스키 안전하게 application.properties 에서 관리 , 즉 프로젝트간 api키는 github에 push 하지말자
     // notion/excel 에서 공유
     // 2. WebClient 객체 빌더패턴 생성
@@ -18,6 +23,10 @@ public class ApiService {
     private String serviceKey;
     private WebClient webClient = WebClient.builder().build();
     // [1] 인천광역시 부평구 맛집 현황 JSON을 Map으로 
+
+    ApiService(Controller.ProductsController productsController) {
+        this.productsController = productsController;
+    }
 
     // 1.
     public Map<String,Object> test1(){
@@ -63,7 +72,18 @@ public class ApiService {
         return null;
         // test2() (전국 약국 정보 API) → 응답이 XML이라서, Map.class로 바로 못 바꿈
 
-        // 3. 프로젝트내 resources>>static> 파일명.csv
+        
+    }
+    // 3. 프로젝트내 resources>>static> 파일명.csv
+    public List<Map<String,Object>> test3(){
+        // 1. .csv파일 경로 , resources 이하 폴더
+        String fileName = "static/중소벤처기업부_벤처기업명단_20260521.csv";
+        // 2. ClassPathResource 객체 이용하여 해당 경로내 파일 가져오기 [파일객체]
+        ClassPathResource resource = new ClassPathResource(fileName);
+        // 3. (대용량)파일들을 바이트로 읽어와서 바이트배열 저장 .getInputStream().readAllBytes();
+        byte[] bytes = resource.getInputStream().readAllBytes();
+
+
     }
 }
 
@@ -78,7 +98,7 @@ public class ApiService {
         - CSV(,쉼표구분) : 값,값,값,값,값
 
 
-        
+
     컬렉션프레임워크: List , Set , Map
     - List: 여러개 자료들을 인덱스로 구분하여 하나의 자료에 저장
         -> [ 값1,값2,값3 ]
