@@ -2,6 +2,8 @@ package example.day08;
 
 import example.totalpractice1.Controller.ProductsController;
 
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -80,9 +82,13 @@ public class ApiService {
         String fileName = "static/중소벤처기업부_벤처기업명단_20260521.csv";
         // 2. ClassPathResource 객체 이용하여 해당 경로내 파일 가져오기 [파일객체]
         ClassPathResource resource = new ClassPathResource(fileName);
-        // 3. (대용량)파일들을 바이트로 읽어와서 바이트배열 저장 .getInputStream().readAllBytes();
-        byte[] bytes = resource.getInputStream().readAllBytes();
-
+        // 3. (대용량)파일들을 바이트로 읽어와서 바이트배열 저장 .getInputStream().readAllBytes(); , +일반예외
+        try{
+            byte[] bytes = resource.getInputStream().readAllBytes();
+        // 4. 한글 인코딩 , EUC-KR , CP949 , UTF-8
+            InputStreamReader reader = new InputStreamReader( new java.io.ByteArrayInputStream(bytes) , Charset.forName("CP949") );
+        }catch( Exception e){System.out.println(e);}
+        
 
     }
 }
