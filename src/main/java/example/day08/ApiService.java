@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
 @Service 
 public class ApiService {
     // 서비스키 안전하게 application.properties 에서 관리 , 즉 프로젝트간 api키는 github에 push 하지말자
@@ -31,6 +33,7 @@ public class ApiService {
                 .bodyToMono( Map.class ) // 응답 결과 content.type 직렬화/변환
                 .block(); // 동기화
                 return response;
+        // 응답이 JSON이라서 bodyToMono(Map.class)로 바로 변환 가능
     }
     // [2] 국립중앙의료원_전국 약국 정보 조회 서비스 XML을 Map으로
     public Map<String,Object> test2(){
@@ -38,49 +41,44 @@ public class ApiService {
         String url ="https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyFullDown";
         url += "?serviceKey="+serviceKey;
         url += "&pageNo="+1;
-        url += "&numOfRows"+10;
-        // 3. 
-        Map<String,Object> response = webClient.get().uri(url).retrieve()
-                .bodyToMono(Map.class) // XML 타입 --> Map 직렬화/변환
+        url += "&numOfRows="+10;
+        // 인증키, 페이지 번호, 한 번에 가져올 개수 조립
+
+        // 3. 주의할점 : WebClient 에서 xml 타입을 String 타입으로 가져오기
+        String response = webClient.get().uri(url).retrieve()
+                .bodyToMono(String.class) // XML 타입 --String-> --> Map 직렬화/변환
                 .block();
-        return response;
 
+        // 일단 원본 그대로 문자열로 받아둠
+
+        // 4. String타입 -> xml 타입 변환 , 
+        XmlMapper xmlMapper = new XmlMapper(); // xml매퍼 객체 생성
+        // XmlMapper는 "XML 문자열을 자바 객체(여기선 Map)로 변환해주는 도구
+        
+        // Map<String,Object> map = xmlMapper.readValue( xml문자열 , 타입명.class); // +일반예외
+        try{
+            Map<String,Object> map = xmlMapper.readValue( response , Map.class);
+            return map;
+        }catch( Exception e){System.out.println(e);}
+        return null;
+        // test2() (전국 약국 정보 API) → 응답이 XML이라서, Map.class로 바로 못 바꿈
+
+        // 3. 프로젝트내 resources>>static> 파일명.csv
     }
-
-
-
-
-
-
-
-
-
-
-
-   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // WebClient : 외부 API(여기선 공공데이터포털)에 HTTP 요청을 보내고 응답을 받아옴
 // .retrieve : 요청 보내고 응답을 받아와라
-// .bodyToMono(Map.class) : 받아온 응답 body(JSON)를 Map 타입으로 변환(직렬화)하겠다는 뜻
-
-
+// .bodyToMono(Map.class) : 받아온 응답 body(JSON)를 Map 타입으로 변환(직렬화)하겠다는
 /*
+
+    JSON VS XML VS CSV
+        - JSON(자바스크립트객체) : { 속성명 : 속성값 , 속성명 : 속성명 }
+        - XML(마크업) : <속성명>속성값</속성명>
+        - CSV(,쉼표구분) : 값,값,값,값,값
+
+
+        
     컬렉션프레임워크: List , Set , Map
     - List: 여러개 자료들을 인덱스로 구분하여 하나의 자료에 저장
         -> [ 값1,값2,값3 ]

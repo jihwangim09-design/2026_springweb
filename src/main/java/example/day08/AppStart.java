@@ -10,4 +10,3 @@ public class AppStart {
         SpringApplication.run(AppStart.class);
     }
 }
-// implementation 'org.springframework.boot:spring-boot-starter-webflux'
