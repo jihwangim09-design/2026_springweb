@@ -2,17 +2,28 @@ package example.day08;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service 
 public class ApiService {
+    // 서비스키 안전하게 application.properties 에서 관리 , 즉 프로젝트간 api키는 github에 push 하지말자
+    // notion/excel 에서 공유
+    // 2. WebClient 객체 빌더패턴 생성
+    // @Value ("${application.propretis속성명}")
+    @Value ("${api.pubilc-data.service-key}")
+    private String serviceKey;
     private WebClient webClient = WebClient.builder().build();
+    // [1] 인천광역시 부평구 맛집 현황
 
     // 1.
     public Map<String,Object> test1(){
         // 1. API 주소( 공공데이터 신청한 api 요청 url )
-        String url ="https://api.odcloud.kr/api/15103411/v1/uddi:efd2cc22-353c-47f0-83e5-abc6dca54f6f?page=1&perPage=10&serviceKey=98c12c038483f278cb5fff938472af4d61d4565864258f12f9308cd04217863b";        
+        String url ="https://api.odcloud.kr/api/15103411/v1/uddi:efd2cc22-353c-47f0-83e5-abc6dca54f6f";
+        url += "?page="+1;
+        url += "&perpage="+10;   
+        url += "&serviceKey="+serviceKey;
         // 3. webClient 객체 이용한 api 요청 하고 응답받기
         Map<String,Object> response = webClient.get() // .http메소드명 http GET메소드
                 .uri(url) // uri는 http 주소상에 자원(쿼리스트링)까지 포함
@@ -21,12 +32,16 @@ public class ApiService {
                 .block(); // 동기화
                 return response;
     }
+    // [2] 국립중앙의료원_전국 약국 정보 조회 서비스
+
+    
    
 }
 
 // WebClient : 외부 API(여기선 공공데이터포털)에 HTTP 요청을 보내고 응답을 받아옴
 // .retrieve : 요청 보내고 응답을 받아와라
 // .bodyToMono(Map.class) : 받아온 응답 body(JSON)를 Map 타입으로 변환(직렬화)하겠다는 뜻
+
 
 /*
     컬렉션프레임워크: List , Set , Map
