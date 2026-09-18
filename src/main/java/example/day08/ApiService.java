@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 
 @Service 
 public class ApiService {
@@ -87,9 +89,21 @@ public class ApiService {
             byte[] bytes = resource.getInputStream().readAllBytes();
         // 4. 한글 인코딩 , EUC-KR , CP949 , UTF-8
             InputStreamReader reader = new InputStreamReader( new java.io.ByteArrayInputStream(bytes) , Charset.forName("CP949") );
+        // 5. OpenCSV 이용하여 바이트들을 대입한다.
+        CSVReader csvReader = new CSVReaderBuilder(reader).build();
+        // 6. 주로 첫행은 제목(행) 가져오기 (key/속성명 사용할 예정)
+        String[] headers = csvReader.readNext(); //한줄 읽어오기
+        // 7. 나머지 행들은 반복문 이용하여 가져오기
+        while ( csvReader.readNext() != null ) { // 읽어온 행에 값이 없을 때 까지 반복
+            String[] value = csvReader.readNext();
+            // 8. 
+            for( int index = 0 ; index < headers.length ; index++){
+                System.out.println( headers[index] );
+                System.out.println( value[index] );
+            }
+        }
         }catch( Exception e){System.out.println(e);}
         
-
     }
 }
 
