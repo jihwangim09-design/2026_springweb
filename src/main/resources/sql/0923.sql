@@ -1,4 +1,4 @@
-INSERT INTO board (idx, subject, name, regdate, content) VALUES
+INSERT INTO board (id, subject, name, regdate, content) VALUES
 (1, '첫 번째 공지사항 안내', '관리자', '2026-09-01 09:00:00', '게시판 서비스가 정식 오픈되었습니다. 많은 이용 부탁드립니다.'),
 (2, 'Spring Boot와 JPA 연동 질문', '김철수', '2026-09-02 10:15:30', '엔티티 매핑 중 일대다 양방향 연관관계 설정 시 순환 참조 문제가 발생합니다.'),
 (3, 'REST API 설계 규칙 공유', '이영희', '2026-09-03 11:30:12', 'URI 설계 원칙 및 HTTP Status Code 표준 가이드라인 정리 내용입니다.'),
