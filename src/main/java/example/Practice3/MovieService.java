@@ -54,8 +54,7 @@ public class MovieService {
     @Transactional
     public boolean 영화수정( MovieDto movieDto ){
         // 1. 수정할 pk 이용하여 엔티티 찾기
-        Optional<MovieEntity> optional 
-            = movieRepository.findById( movieDto.getMovieid() );
+        Optional<MovieEntity> optional = movieRepository.findById( movieDto.getMovieid() );
         if( optional.isPresent() ){ // 2. 존재하면 엔티티 수정한다.
             MovieEntity entity = optional.get();
             entity.setDirector( movieDto.getDirector() );
