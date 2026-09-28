@@ -1,16 +1,28 @@
 package example.day10;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @RestController 
 @RequestMapping ("/api/member")
+@RequiredArgsConstructor 
 public class MemberController {
-    
+    private final MemberService memberService;
+
+    // [1] 회원가입
+    @PostMapping ("/signup")
+    public boolean signup(@RequestBody MemberDto memberDto){
+        return memberService.signup(memberDto);
+    }
+
+
     @GetMapping ("")
     public String test( HttpServletRequest request ){
         // 1) HttpServletRequest: HTTP 요청이 들어오면 요청 정보가 담겨 있는 서블릿 객체 , 반대(응답)는 HttpServletResponse
@@ -33,4 +45,6 @@ public class MemberController {
         session.invalidate(); // 세션 초기화    invalidate : 무효화
         return session.getId();
     }
+
+    
 }
