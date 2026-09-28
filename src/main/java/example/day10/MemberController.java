@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 // 백엔드에서 CORS허용 : 컨트롤러위에 @CrossOrigin 또는 config 파일 만들기 // 도메인이 다른 경우 allowCredentials 이용한 쿠키/세션 유지
 // allowCredentials = "true" 얘는 쿠키를 포함하겠다?
+// 프론트엔드에서 CORS허용 : await axios.post( url , body , { withCredentials: true } );
 @CrossOrigin (origins = "http://localhost:5173" , allowCredentials = "true") 
 public class MemberController {
 
