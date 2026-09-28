@@ -1,5 +1,9 @@
 package example.day10;
 
+import example.day09.Controller.ApiController;
+import example.totalpractice1.model.Repository.ReviewRepository;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,14 +16,54 @@ import lombok.RequiredArgsConstructor;
 
 @RestController 
 @RequestMapping ("/api/member")
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
+// 백엔드에서 CORS허용 : 컨트롤러위에 @CrossOrigin 또는 config 파일 만들기 // 도메인이 다른 경우 allowCredentials 이용한 쿠키/세션 유지
+// allowCredentials = "true" 얘는 쿠키를 포함하겠다?
+@CrossOrigin (origins = "http://localhost:5173" , allowCredentials = "true") 
 public class MemberController {
+
     private final MemberService memberService;
 
     // [1] 회원가입
     @PostMapping ("/signup")
     public boolean signup(@RequestBody MemberDto memberDto){
         return memberService.signup(memberDto);
+    }
+    // [2] 로그인 + 세션(인증 성공시 성공한 회원정보 저장/왜? 로그인 성공한 회원이 글쓰기/제품등록 등등 FK용도)
+    @PostMapping ("/login")
+    public MemberDto login( @RequestBody MemberDto memberDto , HttpSession session ){
+        // 1. 서비스에게 인증 확인 한다
+        MemberDto result = memberService.login((memberDto));
+        if (result == null) return null; // 로그인실패
+        // 2. 인증 성공이면 세션에 인증한 회원정보 담아주기.
+        // 매개변수에 HttpSession 객체 정의 
+        // 'login_member'라는key(이름) 으로 memberDto value(로그인성공한) 정보 저장
+        session.setAttribute("login_member", result); // Object로 (자동) 업캐스팅 dto->Object 
+        // 이렇게 세션에 통쨰로 다 저장하면 용량이 커서 아이디랑 권한이랑 비번정도
+        return result;
+    }
+
+    // 먼저 login을 보내고 다음에 me를 해야 나옴
+    // [3] 내정보조회 + 세션{인가}( 이미 로그인된 회원이 내정보를 요청할때 )
+    @GetMapping ("/me")
+    public MemberDto getMyInfo( HttpSession session){
+        // * 사용자에게 추가로 입력받을 값은 없다
+        // 1) 세션에서 특정한(login_member) 정보 꺼내기
+        Object obj = session.getAttribute("login_member");
+        if( obj == null) return null; // 세션 정보가 비어 있으면 실패
+        // 2) 존재하면 다운캐스팅 obj -> dto
+        MemberDto memberDto = (MemberDto)obj;
+        // 3) 서비스에게 회원정보를 전달하여 추가 정보 요청하여 반환한다
+        return memberService.getMyInfo(memberDto.getMno());
+    }
+    // Talend API Tester  : /me -> /login -> /me -> /logout -> /me
+    // [4] 로그아웃 + 세션 ( 초기화 )
+    @PostMapping ("logout")
+    public boolean logout( HttpSession httpSession){
+        // * 사용자에게 추가로 입력받을 값은 없다
+        httpSession.invalidate(); // 선택1] 세션 내 모든 정보 초기화
+        // httpSession.removeAttribute("login_member"); // 선택2] 세션 내 특정 정보 삭제
+        return true;
     }
 
 
