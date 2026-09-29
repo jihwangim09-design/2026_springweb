@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 @Component // SPRING MVC 패턴 객체가 아닌 일반 객체(빈) 생성 
 public class JwtUtil {
@@ -19,7 +20,13 @@ public class JwtUtil {
     @Value("${jwt.secret}")  
     private String key;
     // hmacSha 알고리즘 : 단방향 , 대칭키( 바이트로 변환 하여 설정 )
-    private final SecretKey secretKey = Keys.hmacShaKeyFor( key.getBytes( StandardCharsets.UTF_8 ) );
+    
+    // sha알고리즘 + 비밀키(임의로) 조합 -> hmacSha
+    private SecretKey secretKey;
+    @PostConstruct // 객체 생성시 의존성(@Value)가 완료된 후에 아래 메소드가 1번 호출 되도록 하는 어노테이션
+    public void init(){
+        this.secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
+    }
 
     // [1] JWT 토큰 생성 메소드 
     public String createToken( Long mno ){
