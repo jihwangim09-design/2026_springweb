@@ -29,51 +29,47 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
     private final MemberService memberService;
-
+    private final JwtUtil jwtUtil;
     // [1] 회원가입
     @PostMapping ("/signup")
     public boolean signup(@RequestBody MemberDto memberDto){
         return memberService.signup(memberDto);
     }
     // [2] 로그인 + 세션(인증 성공시 성공한 회원정보 저장/왜? 로그인 성공한 회원이 글쓰기/제품등록 등등 FK용도)
-    // + 쿠키변경( 회원 식별(번호) 쿠키에 담아 클라이언트에 전송 )
+    // [2] 로그인 + 쿠키변경( 회원 식별(번호) 쿠키에 담아 클라이언트에 전송 )
     @PostMapping("/login")
     public MemberDto login( @RequestBody MemberDto memberDto , HttpServletResponse response ){
         // 1. 서비스 에게 인증/로그인 확인 (기존 유지)
         MemberDto result = memberService.login(memberDto);
         if( result == null ) return null; // 로그인 실패시 
-        // 2. 로그인 성공 시 쿠키 생성/발급
-        // 쿠키는 세션과 다르게 클라이언트내 저장 되므로 회원번호 만 저장( 민감한정보는 쿠키에 넣지말자 )
-        // ResponseCookie cookie  = ResponseCookie.from( "쿠키명" , "쿠키값").build();
-        // *참고: 정수->문자 타입변환 방법1) 정수+"" , 방법2) String.valueOf(정수) , *쿠키값는 String 타입이다*
-        ResponseCookie cookie = ResponseCookie.from( "login_member" , result.getMno()+"" )
+        // 2. 로그인 성공 시 쿠키 생성/발급 *********** 쿠키 값을 jwt 안전하게 변경 *************
+        // 4. 토큰(token) 발급 요청
+        String token = jwtUtil.createToken( result.getMno() ); // mno --> jwt 
+        ResponseCookie cookie = ResponseCookie.from( "login_member" , token )
                                 .path("/") // 쿠키 사용할 경로 , "/" 도메인내 전체
-                                // Duration.ofXXX(수) 기간을 정할때 유효기간 정하기
-                                .maxAge( Duration.ofDays(1) ) // 쿠키의 유효기간 , 1일
+                                .maxAge( Duration.ofDays(1) ) // 쿠키의 유효기간 , 1일  // Duration.ofXXX( 수 )
                                 .httpOnly(true) // JS이용한 탈취 방지 , XSS공격
                                 .secure(false) // HTPPS 에서만 사용 , 개발단계:FALSE , 배포단계:TRUE 
                                 .sameSite("Lax") // CSRF 공격방어
                                 .build(); // 쿠키생성 끝 
         // 3. 응답 헤더에 쿠키 등록 , response.setHeader( )
-        // HttpHeaders 자동완성 : org.springframework.http.HttpHeaders;[o] , import java.net.http.HttpHeaders; [x]
-        response.setHeader( org.springframework.http.HttpHeaders.SET_COOKIE  , cookie.toString() );
+        response.setHeader( HttpHeaders.SET_COOKIE  , cookie.toString() );
         return result;
     }
 
     // 먼저 login을 보내고 다음에 me를 해야 나옴
     // [3] 내정보조회 + 쿠키
-    
-    // [3] 내정보조회 + 쿠키
     @GetMapping("/me")
     public MemberDto getMyInfo( 
         // @CookieValue( value="쿠키명") ){ // 요청한 브라우저의 쿠키 가져오기 
-        @CookieValue (value="login_member" , required = false ) String loginMno ){
-        //1. 만약에 loginMno가 없다면 비로그인
-        if( loginMno == null ) return  null;
-        // 2. 로그인 중이면 서비스에게 회원정보 요청
-        // 참고: 문자->기본타입 변환 방법1) 래퍼클래스명.parse타입( 문자 )
-        return memberService.getMyInfo( Long.parseLong(loginMno) );
+        @CookieValue (value="login_member" , required = false ) String token ){
+        //1. 만약에 token이 없다면 비로그인
+        if( token == null ) return  null;
+        // ******* 쿠키에 저장된 token 이용하여 회원번호 찾기 ******* 
+        Long loginMno = jwtUtil.getMnoFromToken(token);
+        return memberService.getMyInfo( loginMno );
     }
+
     // Talend API Tester  : /me -> /login -> /me -> /logout -> /me
     // [4] 로그아웃 + 쿠키
     @PostMapping ("/logout")
