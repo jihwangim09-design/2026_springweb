@@ -63,7 +63,7 @@ public class MemberController {
     @GetMapping("/me")
     public MemberDto getMyInfo( 
         // @CookieValue( value="쿠키명") ){ // 요청한 브라우저의 쿠키 가져오기 
-        @CookieValue (value="login_member" , required = false ) String token ){
+        @CookieValue (value="accessToken" , required = false ) String token ){
         //1. 만약에 token이 없다면 비로그인
         if( token == null ) return  null;
         // ******* 쿠키에 저장된 token 이용하여 회원번호 찾기 ******* 
