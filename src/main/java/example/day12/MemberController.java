@@ -37,23 +37,28 @@ public class MemberController {
     }
     // [2] 로그인 + 세션(인증 성공시 성공한 회원정보 저장/왜? 로그인 성공한 회원이 글쓰기/제품등록 등등 FK용도)
     // [2] 로그인 + 쿠키변경( 회원 식별(번호) 쿠키에 담아 클라이언트에 전송 )
+    private final RedisTokenService redisTokenService;
+    // [2] 로그인 
     @PostMapping("/login")
     public MemberDto login( @RequestBody MemberDto memberDto , HttpServletResponse response ){
-        // 1. 서비스 에게 인증/로그인 확인 (기존 유지)
-        MemberDto result = memberService.login(memberDto);
+        MemberDto result = memberService.login(memberDto); // 1. 서비스 에게 인증/로그인 확인 (기존 유지)
         if( result == null ) return null; // 로그인 실패시 
-        // 2. 로그인 성공 시 쿠키 생성/발급 *********** 쿠키 값을 jwt 안전하게 변경 *************
-        // 4. 토큰(token) 발급 요청
-        String token = jwtUtil.createToken( result.getMno() ); // mno --> jwt 
-        ResponseCookie cookie = ResponseCookie.from( "login_member" , token )
-                                .path("/") // 쿠키 사용할 경로 , "/" 도메인내 전체
-                                .maxAge( Duration.ofDays(1) ) // 쿠키의 유효기간 , 1일  // Duration.ofXXX( 수 )
-                                .httpOnly(true) // JS이용한 탈취 방지 , XSS공격
-                                .secure(false) // HTPPS 에서만 사용 , 개발단계:FALSE , 배포단계:TRUE 
-                                .sameSite("Lax") // CSRF 공격방어
-                                .build(); // 쿠키생성 끝 
-        // 3. 응답 헤더에 쿠키 등록 , response.setHeader( )
-        response.setHeader( HttpHeaders.SET_COOKIE  , cookie.toString() );
+        // 4. 토큰(token) **2개** 발급 요청
+        String accessToken = jwtUtil.createAccessToken( result.getMno() );
+        String refreshToken = jwtUtil.createRefreshToken( result.getMno() );
+        // 5. refeshToken 만 **레디스** 에 저장
+        redisTokenService.setRefreshToken( result.getMno() , refreshToken);
+        // 2. 로그인 성공 시 쿠키 2개 생성/발급 , 쿠키만료기간 == 토큰만료기간 동일권장
+        ResponseCookie cookie1 = ResponseCookie.from("accessToken" , accessToken)
+                                .path("/").maxAge(Duration.ofMinutes(30) ) // 30분
+                                .httpOnly(true).secure(false).sameSite("Lax").build();
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken" , refreshToken)
+                        .path("/").maxAge(Duration.ofDays(7) ) // 7일 
+                        .httpOnly(true).secure(false).sameSite("Lax").build();
+
+        // 3. 응답 헤더에 쿠키 2개 등록 , response.setHeader( )
+        response.setHeader( HttpHeaders.SET_COOKIE  , cookie1.toString() );
+        response.setHeader( HttpHeaders.SET_COOKIE  , cookie2.toString() );
         return result;
     }
 

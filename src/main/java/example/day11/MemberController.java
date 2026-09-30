@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
+
 @RestController 
 @RequestMapping ("/api/member")
 @RequiredArgsConstructor

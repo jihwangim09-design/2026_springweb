@@ -18,22 +18,31 @@ public class JwtUtil {
     // @Value("${propertis파일내속성명}) , 속성값
     // propertis파일내 api인증키 또는 개발자 보안데이터들 넣어 안전하게 사용 목적
     @Value("${jwt.secret}")  
-    private String key;
-    // hmacSha 알고리즘 : 단방향 , 대칭키( 바이트로 변환 하여 설정 )
-    
+    private String key; 
     // sha알고리즘 + 비밀키(임의로) 조합 -> hmacSha
     private SecretKey secretKey;
-    @PostConstruct // 객체 생성시 의존성(@Value)가 완료된 후에 아래 메소드가 1번 호출 되도록 하는 어노테이션
+    @PostConstruct // 객체 생성시 의존성( @Value )가 완료 된 후에 아래 메소드가 1번 호출 되도록 하는 어노테이션 
     public void init(){
-        this.secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
+        this.secretKey = Keys.hmacShaKeyFor( key.getBytes( StandardCharsets.UTF_8 ) );
     }
 
-    // [1] JWT 토큰 생성 메소드 
-    public String createToken( Long mno ){
+    // [3] JWT Refresh 토큰 생성 메소드
+    public String createRefreshToken( Long mno ){
+        return Jwts.builder() // 토큰 생성 시작 
+                .claim("type", "REFRESH")
+                .subject( mno + "" )
+                .issuedAt( new Date() )
+                .expiration( new Date( new Date().getTime()+ 1000L * 60 * 60 * 24 * 7 ) ) // 액세스 토큰 보다 만료기간 길게(7일)
+                .signWith( secretKey )
+                .compact(); // 생성된 토큰 문자열 반환 
+    }
+    // [1] JWT ACCESS 토큰 생성 메소드 
+    public String createAccessToken( Long mno ){
         String jwt = Jwts.builder() // 토큰 생성 시작
+                    .claim("type", "ACCESS")
                     .subject( mno+"" ) // 토큰에 들어갈 내용(playload)들( 주로 식별번호, 권한 )
                     .issuedAt( new Date() ) // 토큰 생성 시간 ,   
-                    .expiration( new Date( new Date().getTime() * 60 * 60 ) ) // 토큰 만료 시간 
+                    .expiration( new Date( new Date().getTime() + 1000L * 60 * 60 ) ) // 30분
                     // new Date() 현재시간 , new Date().getTime() 현재시간초 , * 60(1분) * 60 (1시간)
                     .signWith(secretKey) // 비밀키로 전자서명 
                     .compact(); // 토큰 생성 끝 , 토큰정보 문자열(String) 로 반환 
