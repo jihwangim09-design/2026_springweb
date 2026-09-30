@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import example.Practice5.model.dto.BoardDto;
-import example.Practice5.service.BoardService;
+import example.Practice5.Service.BoardService;
+import example.Practice5.dto.BoardDto;
+
 
 @RestController@RequestMapping("/api/board")
 public class BoardController {

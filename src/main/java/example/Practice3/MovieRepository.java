@@ -8,7 +8,7 @@ import example.day09.model.Entity.ApiEntity;
 
  	
 @Repository
-public interface MovieRepository extends JpaRepository <ApiEntity,Integer> {
+public interface MovieRepository extends JpaRepository <MovieEntity,Integer> {
     
 
     

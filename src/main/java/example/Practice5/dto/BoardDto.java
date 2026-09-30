@@ -35,7 +35,7 @@ public class BoardDto {
     //
    public static BoardDto from( BoardEntity entity ){
         return BoardDto.builder()
-                .boardId( entity.getBoardId() ) // private Integer boardId;
+                .boardId( entity.getId() ) // private Integer boardId;
                 .author( entity.getAuthor() )
                 .content( entity.getContent() )
                 .password( entity.getPassword() )

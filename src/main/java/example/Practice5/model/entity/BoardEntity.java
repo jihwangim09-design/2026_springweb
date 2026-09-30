@@ -5,7 +5,6 @@ import java.util.List;
 
 import example.Practice5.Basetime;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +27,7 @@ import lombok.ToString;
 public class BoardEntity extends Basetime {
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
-    private Integer boardId;
+    private Integer Id;
     // @Column
     // author, password, content는 옵션 없이 쓸 거면 @Column 생략 가능
     private String author;

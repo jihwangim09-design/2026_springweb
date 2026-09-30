@@ -6,10 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import example.Practice5.model.dto.BoardDto;
-import example.Practice5.model.dto.CommentDto;
+import example.Practice5.dto.BoardDto;
+import example.Practice5.dto.CommentDto;
+import example.Practice5.model.Repository.BoardRepository;
 import example.Practice5.model.entity.BoardEntity;
-import example.Practice5.model.repository.BoardRepository;
+
 
 @Service
 public class BoardService {
