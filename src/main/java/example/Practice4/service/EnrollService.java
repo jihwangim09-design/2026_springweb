@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import example.Practice4.dto.EnrollDto;
+import example.Practice4.model.dto.EnrollDto;
 import example.Practice4.model.entity.CourseEntity;
 import example.Practice4.model.entity.EnrollEntity;
 import example.Practice4.model.entity.StudentEntity;
@@ -13,8 +13,8 @@ import example.Practice4.model.repository.CourseRepository;
 import example.Practice4.model.repository.EnrollRepository;
 import example.Practice4.model.repository.StudentRepository;
 
-@Service 
-public class EnrollService { 	
+@Service
+public class EnrollService {
     @Autowired private EnrollRepository enrollRepository;
     @Autowired private StudentRepository studentRepository;
     @Autowired private CourseRepository courseRepository;

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.stereotype.Service;
 
-import example.Practice4.dto.CourseDto;
-import example.Practice4.dto.StudentDto;
+import example.Practice4.model.dto.CourseDto;
+import example.Practice4.model.dto.StudentDto;
 import example.Practice4.model.entity.CourseEntity;
 import example.Practice4.model.repository.CourseRepository;
 
@@ -42,6 +41,4 @@ public class CourseService {
         // 3.
         return courseDtos;
     }
-
-
 }
