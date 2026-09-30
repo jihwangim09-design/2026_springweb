@@ -43,7 +43,4 @@ public class BoardService {
         return boardDtos;
     }
 
-    public boolean 게시물삭제( Integer boardid , String password){
-        Optional<example.Practice7.model.Entity.BoardEntity
-    }
 }
