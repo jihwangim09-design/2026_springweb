@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties.Lettuce.Cluster.Refresh;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -25,7 +26,10 @@ public class JwtUtil {
     public void init(){
         this.secretKey = Keys.hmacShaKeyFor( key.getBytes( StandardCharsets.UTF_8 ) );
     }
-
+    // 왜 토큰을 2개 만드는가?
+    // Access는 요청할 때마다 서버로 보내서 탈취 위험이 큼 그래서 수명을 짧게 (1시간)
+    // 근데 1시간마다 재로그인하면 불편해서 수명이 긴 Refresh를 따로 보관해두고 Access가 만료되면 Refresh를 보여주고 새 Access를 받음
+    // 그리고 이 Refresh 토큰을 서버가 어디에 저장할지가 문제인데 여기서 Redis가 나옴 
     // [3] JWT Refresh 토큰 생성 메소드
     public String createRefreshToken( Long mno ){
         return Jwts.builder() // 토큰 생성 시작 
@@ -33,6 +37,7 @@ public class JwtUtil {
                 .subject( mno + "" )
                 .issuedAt( new Date() )
                 .expiration( new Date( new Date().getTime()+ 1000L * 60 * 60 * 24 * 7 ) ) // 액세스 토큰 보다 만료기간 길게(7일)
+                // 1000(초) × 60(분) × 60(시간) × 24(하루) × 7(일주일)
                 .signWith( secretKey )
                 .compact(); // 생성된 토큰 문자열 반환 
     }
@@ -42,12 +47,12 @@ public class JwtUtil {
                     .claim("type", "ACCESS")
                     .subject( mno+"" ) // 토큰에 들어갈 내용(playload)들( 주로 식별번호, 권한 )
                     .issuedAt( new Date() ) // 토큰 생성 시간 ,   
-                    .expiration( new Date( new Date().getTime() + 1000L * 60 * 60 ) ) // 30분
+                    .expiration( new Date( new Date().getTime() + 1000L * 60 * 60 ) ) // 1시간
                     // new Date() 현재시간 , new Date().getTime() 현재시간초 , * 60(1분) * 60 (1시간)
-                    .signWith(secretKey) // 비밀키로 전자서명 
+                    .signWith(secretKey) // 비밀키로 전자서명 init()에서 만든 secretKey
                     .compact(); // 토큰 생성 끝 , 토큰정보 문자열(String) 로 반환 
-        System.out.println( jwt );
-        return jwt;
+        System.out.println( jwt ); // 콘솔 출력 (확인용)
+        return jwt; 
     }
 
     // [2] JWT 토큰 검증 메소드
