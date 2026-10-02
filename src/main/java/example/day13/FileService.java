@@ -2,11 +2,14 @@ package example.day13;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URLEncoder;
 import java.rmi.server.ExportException;
 import java.util.UUID;
 
+import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class FileService {
@@ -61,13 +64,32 @@ public class FileService {
             byte[] bytes = new byte[ (int)fileSize ]; // 파일 용량만큼 바이트 배열 생성
             fin.read( bytes ); // 파일입력객체가 입력온 바이트들을 바이트배열에 저장
             fin.close(); // 스트림(이동)긴 안전하게 스트림 직접 닫기
-
+        // 6. 다운로드 형식 지정 : 브라우저 마다 상이
+        // 실제 파일명으로 찾기 , UUID_짱구.jpg ---> 짱구.jpg
+        // .split("기준문자"); , 문자열내 특정 기준문자로 분해
+        String realFileName = fileName.split("_")[1]; // 언더바 기준으로 쪼개서 2번째 인덱스 값 가져오기
+        // HTTP 헤더에 다운로드 형식 지정
+        response.setHeader("Context-Dispositon", 
+                        "attactment;filename="+URLEncoder.encode(realFileName , "UTF-8"));
+        // 5. 서버로 가져온 파일(바이트들)을 HTTP 응답하기 , 현재 다운로드 요청한 서블렛의 출력스트림 가져오김
+            ServletOutputStream fout = response.getOutputStream();
+            fout.write(bytes); // 서블릿출력스트림 객체로 앞전에 읽어온 파일바이트배열 내보내기
+            fout.close();
         }catch( Exception e ){System.out.println(e);}
+
+        
 
     }
 
     // [4] 파일 삭제 함수
-
-
-
+    public boolean fileDelete( String fileName ){
+        // 1. 삭제할 파일명과 경로 조합
+        String deleteFilePath = uploadPath+fileName;
+        // 2. 만약에 경로에 파일이 존재하면 파일 삭제
+        File file = new File(deleteFilePath);
+        if (file.exists() ){
+            file.delete(); // 해당 경로에 파일 삭제 함수
+            return true;
+        }else{ return  false; } 
+    }
 } // service end
