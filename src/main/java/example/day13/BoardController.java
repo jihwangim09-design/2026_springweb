@@ -14,7 +14,7 @@ public class BoardController {
     private final BoardService boardService;
     // 등록
     @PostMapping("/write")
-    public boolean write( BoardDto dto) {
+    public boolean write( @ModelAttribute BoardDto dto) {
         return boardService.boardWrite(dto);
     }
 
@@ -29,5 +29,7 @@ public class BoardController {
     public BoardDto view(@RequestParam ( name = "id") Long id) {
         return boardService.boardFindById(id);
     }
+
+    
 
 }
