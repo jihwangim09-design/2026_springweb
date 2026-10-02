@@ -1,9 +1,13 @@
 package example.day13;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.rmi.server.ExportException;
 import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public class FileService {
     
@@ -41,9 +45,29 @@ public class FileService {
         return null;
 
     }
-    
+
     // [3] 다운로드 함수
+    // C드라이브 파일 --FileInput --> JAVA -- Servletout --> 브라우저
+    public void fileDownload(String fileName , HttpServletResponse response){
+        // 1. 다운로드할 파일명과 HTTP응답객체 받는다.
+        // 2. 다운로드할 파일명과 업로드 경로 조합
+        String downloadPath = uploadPath + fileName; // 업로드경로 + 파일명;
+        // 3. 만약에 해당 경로에 파일이 없으면
+        File file = new File( downloadPath ); if( file.exists() ){ return; }
+        // 4. 있으면 파일 읽어오기 , FileInputStream
+        try{
+            FileInputStream fin = new FileInputStream( downloadPath ); // 파일입력객체생성
+            long fileSize = file.length(); // 파일명 (바이트) 용량확인
+            byte[] bytes = new byte[ (int)fileSize ]; // 파일 용량만큼 바이트 배열 생성
+            fin.read( bytes ); // 파일입력객체가 입력온 바이트들을 바이트배열에 저장
+            fin.close(); // 스트림(이동)긴 안전하게 스트림 직접 닫기
+
+        }catch( Exception e ){System.out.println(e);}
+
+    }
 
     // [4] 파일 삭제 함수
+
+
 
 } // service end
