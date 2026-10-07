@@ -42,6 +42,8 @@ dependencies {	// start
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 	// 10. Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	// 11. websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
